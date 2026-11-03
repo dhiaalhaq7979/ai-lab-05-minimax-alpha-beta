@@ -1,0 +1,72 @@
+AI Lab 05 - Adversarial Search: Minimax and Alpha-Beta Pruning
+Student: Dhia Alhaq Saleh Al-Hindrish | BS Software Engineering
+Python 3.11.6 (standard library only)
+
+----------------------------------------------------------------------
+Task 1 | Minimax on the manual tree (section 5.1)
+----------------------------------------------------------------------
+leaves (padded) = [3, 5, 2, 9, 0, 7, 0, 0], depth = 3
+The optimal value is: 5
+Hand-trace check (backed-up values):
+  level 0 [MAX]: [5]
+  level 1 [MIN]: [5, 0]
+  level 2 [MAX]: [5, 9, 7, 0]
+  level 3 [leaves]: [3, 5, 2, 9, 0, 7, 0, 0]
+Counted minimax: value 5, 8/8 leaves evaluated
+
+----------------------------------------------------------------------
+Section 5.2 | Alpha-Beta on the manual scores
+----------------------------------------------------------------------
+alphabeta(...) = 5
+
+----------------------------------------------------------------------
+Task 2 | Leaf evaluations: Minimax vs Alpha-Beta
+----------------------------------------------------------------------
+Manual 5.2 tree: leaves [3, 5, 2, 9, 3, 5, 2, 9]
+  Minimax    -> value 5, 8 leaves evaluated
+  Alpha-Beta -> value 5, 6 leaves evaluated (positions [0, 1, 2, 3, 4, 5])
+    cut: MIN node at level 1, position 1: alpha=5 >= beta=5 -> right branch pruned
+  same value: True, leaves saved: 2
+
+Manual 5.1 tree (padded): leaves [3, 5, 2, 9, 0, 7, 0, 0]
+  Minimax    -> value 5, 8 leaves evaluated
+  Alpha-Beta -> value 5, 8 leaves evaluated (positions [0, 1, 2, 3, 4, 5, 6, 7])
+  same value: True, leaves saved: 0
+
+My tree: leaves [4, 8, 1, 6, 7, 2, 9, 3]
+  Minimax    -> value 7, 8 leaves evaluated
+  Alpha-Beta -> value 7, 7 leaves evaluated (positions [0, 1, 2, 3, 4, 5, 6])
+    cut: MAX node at level 2, position 3: alpha=9 >= beta=7 -> right branch pruned
+  same value: True, leaves saved: 1
+
+Reference check with the manual functions (root values):
+  5.1: minimax = 5, alphabeta = 5
+  5.2: minimax = 5, alphabeta = 5
+  mine: minimax = 7, alphabeta = 7
+
+----------------------------------------------------------------------
+Task 3 | Move ordering changes pruning, never the value
+----------------------------------------------------------------------
+Manual 5.2 tree:
+  ordering                     | value MM | value AB | leaves MM | leaves AB | pruned
+  best child first everywhere  | 5        | 5        | 8         | 5         | 3
+  as given                     | 5        | 5        | 8         | 6         | 2
+  root branches swapped        | 5        | 5        | 8         | 6         | 2
+  left MIN children swapped    | 5        | 5        | 8         | 6         | 2
+  right MIN children swapped   | 5        | 5        | 8         | 8         | 0
+  worst child first everywhere | 5        | 5        | 8         | 8         | 0
+
+My tree:
+  ordering                     | value MM | value AB | leaves MM | leaves AB | pruned
+  best child first everywhere  | 7        | 7        | 8         | 5         | 3
+  as given                     | 7        | 7        | 8         | 7         | 1
+  root branches swapped        | 7        | 7        | 8         | 7         | 1
+  left MIN children swapped    | 7        | 7        | 8         | 7         | 1
+  right MIN children swapped   | 7        | 7        | 8         | 8         | 0
+  worst child first everywhere | 7        | 7        | 8         | 8         | 0
+
+Note on padding (5.1 tree):
+  padding with 0  -> value 5
+  padding with 99 -> value 7
+  The padded zeros behave like real moves for MIN. Without them the right
+  MIN node only has the branch (0, 7) = 7, so the true value would be 7.
