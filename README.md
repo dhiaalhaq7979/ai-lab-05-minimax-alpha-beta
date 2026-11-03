@@ -63,7 +63,7 @@ The zeros added to complete the 5.1 tree act like real moves for MIN. With paddi
 
 ## Author
 
-**Dhia Alhaq Saleh Al-Hindrish** — BS Software Engineering, Superior University, Lahore
+**Dheya Alhag** — BS Software Engineering, Superior University, Lahore
 GitHub: [@dhiaalhaq7979](https://github.com/dhiaalhaq7979)
 
 Licensed under the [MIT License](LICENSE).
